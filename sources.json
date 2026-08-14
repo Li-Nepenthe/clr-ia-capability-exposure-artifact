@@ -1,0 +1,23 @@
+{
+  "analyzed": [
+    {
+      "title": "CLR-IA: An Efficient Identity Authentication Protocol With Continuous Leakage Resilience for Mobile Edge Computing",
+      "venue": "IEEE Transactions on Dependable and Secure Computing",
+      "volume": "23",
+      "issue": "3",
+      "pages": "5621-5636",
+      "doi": "10.1109/TDSC.2026.3657345",
+      "sha256": "09745d882c72fc52c8c6d2be172dd018c72f0e1252efd238860f89534f595b7e",
+      "note": "The article itself is not redistributed here. Physical page = printed page - 5620.",
+      "locators": {
+        "leakage oracle": "physical p. 4 / printed p. 5624",
+        "PRE and ANY games": "physical p. 4 / printed p. 5624",
+        "Definition 5 (protocol tuple)": "physical p. 5 / printed p. 5625",
+        "Definition 6 (continual notion)": "physical p. 5 / printed p. 5625",
+        "construction, n >= 16 and (f_a, f_b)": "physical p. 7 / printed p. 5627",
+        "allowance lemma and main theorem proof": "physical p. 8 / printed p. 5628",
+        "anytime proof, halved budget": "physical p. 8 / printed p. 5628"
+      }
+    }
+  ]
+}
