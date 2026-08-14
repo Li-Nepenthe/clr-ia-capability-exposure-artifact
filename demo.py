@@ -179,6 +179,85 @@ def random_invertible(n, q, rng):
             return mat, inv
 
 
+def column_rank(cols, n, q):
+    """Rank of the vectors in `cols`, each a length-n list, over Z_q."""
+    rows = [list(c) for c in cols]
+    rank = 0
+    pivot_col = 0
+    while rank < len(rows) and pivot_col < n:
+        pivot = None
+        for r in range(rank, len(rows)):
+            if rows[r][pivot_col] % q != 0:
+                pivot = r
+                break
+        if pivot is None:
+            pivot_col += 1
+            continue
+        rows[rank], rows[pivot] = rows[pivot], rows[rank]
+        inv = pow(rows[rank][pivot_col], q - 2, q)
+        rows[rank] = [(v * inv) % q for v in rows[rank]]
+        for r in range(len(rows)):
+            if r == rank:
+                continue
+            f = rows[r][pivot_col] % q
+            if f:
+                rows[r] = [(rows[r][k] - f * rows[rank][k]) % q for k in range(n)]
+        rank += 1
+        pivot_col += 1
+    return rank
+
+
+def extend_to_basis(cols, n, q):
+    """Return an invertible n x n matrix whose first columns are `cols`."""
+    chosen = [list(c) for c in cols]
+    for i in range(n):
+        if len(chosen) == n:
+            break
+        cand = [1 if k == i else 0 for k in range(n)]
+        if column_rank(chosen + [cand], n, q) == len(chosen) + 1:
+            chosen.append(cand)
+    if len(chosen) != n:
+        return None
+    mat = [[chosen[j][i] for j in range(n)] for i in range(n)]
+    return mat if mat_inverse(mat, q) is not None else None
+
+
+def map_row_to_e1(a, n, q):
+    """Invertible M with a.M = (1, 0, ..., 0), for a nonzero row vector a."""
+    j = next(i for i, v in enumerate(a) if v % q != 0)
+    inv = pow(a[j], q - 2, q)
+    cols = [[(inv if k == j else 0) for k in range(n)]]        # a . v = 1
+    for i in range(n):                                          # basis of ker(a)
+        if i == j:
+            continue
+        col = [0] * n
+        col[i] = 1
+        col[j] = (-a[i] * inv) % q
+        cols.append(col)
+    mat = [[cols[j2][i] for j2 in range(n)] for i in range(n)]
+    inverse = mat_inverse(mat, q)
+    return (mat, inverse) if inverse is not None else (None, None)
+
+
+def sample_E_F(n, q, rng):
+    """E != 0^n and F in Z_q^{n x 2} with E.F = (0, 0)."""
+    while True:
+        E = [rng.randrange(q) for _ in range(n)]
+        if any(e % q != 0 for e in E):
+            break
+    j = next(i for i, v in enumerate(E) if v % q != 0)
+    e_inv = pow(E[j], q - 2, q)
+    F = [[0, 0] for _ in range(n)]
+    for col in range(2):
+        vec = [rng.randrange(q) for _ in range(n)]
+        vec[j] = 0
+        acc = sum(E[i] * vec[i] for i in range(n)) % q
+        vec[j] = (-acc * e_inv) % q
+        for i in range(n):
+            F[i][col] = vec[i]
+    return E, F
+
+
 # --------------------------------------------------------------------------
 # serialization
 # --------------------------------------------------------------------------
@@ -271,29 +350,72 @@ def impersonate(verifier, X, rng, p, q, g1, g2):
     return verifier.accepts(U, c, v1, v2), c
 
 
-def refresh(A, B, q, rng):
-    """A product-preserving refresh, not the source's exact Update.
+class UpdateFailed(Exception):
+    pass
 
-    Draws a non-singular T, sets E = A.T, draws F with E.F = (0,0), and returns
-    A' = E, B' = T^-1.B + F. Then A'.B' = A.B, so the decoded pair and the
-    public key are both unchanged while both stored components are rerandomized.
+
+def update(A, B, q, rng, attempts=32):
+    """The source's key update algorithm.
+
+        1. sample E != 0^n and F with E.F = (0,0)
+        2. take a non-singular T with A.T = E
+        3. B' = B + T.F
+        4. sample E' != 0^n and F' with E'.F' = (0,0)
+        5. take a non-singular T' with T'.B' = F'
+        6. A' = A + E'.T'
+
+    Correctness: A'B' = (A + E'T')B' = AB' + E'F' = AB' = A(B + TF)
+                      = AB + EF = AB.
+
+    Returns (A', B', witnesses) where witnesses carries E, F, T, E', F', T'
+    so the caller can assert the algorithm's own preconditions.
     """
     n = len(A)
-    T, T_inv = random_invertible(n, q, rng)
-    E = mat_vec_row(A, T, q)
-    nonzero = next(i for i, e in enumerate(E) if e % q != 0)
-    e_inv = pow(E[nonzero], q - 2, q)
-    F = [[0, 0] for _ in range(n)]
-    for col in range(2):
-        vec = [rng.randrange(q) for _ in range(n)]
-        vec[nonzero] = 0
-        acc = sum(E[i] * vec[i] for i in range(n)) % q
-        vec[nonzero] = (-acc * e_inv) % q
-        for i in range(n):
-            F[i][col] = vec[i]
-    B_new = mat_mul(T_inv, B, q)
-    B_new = [[(B_new[i][j] + F[i][j]) % q for j in range(2)] for i in range(n)]
-    return E, B_new
+
+    # steps 1-3
+    E, F = sample_E_F(n, q, rng)
+    M, _ = map_row_to_e1(A, n, q)
+    N, N_inv = map_row_to_e1(E, n, q)
+    if M is None or N is None:
+        raise UpdateFailed("could not build the change of basis for T")
+    T = mat_mul(M, N_inv, q)
+    T_inv = mat_inverse(T, q)
+    if T_inv is None:
+        raise UpdateFailed("T is singular")
+    TF = mat_mul(T, F, q)
+    B_new = [[(B[i][j] + TF[i][j]) % q for j in range(2)] for i in range(n)]
+
+    # steps 4-6
+    B_cols = [[B_new[i][j] for i in range(n)] for j in range(2)]
+    if column_rank(B_cols, n, q) != 2:
+        raise UpdateFailed("B' does not have rank 2")
+    P = extend_to_basis(B_cols, n, q)
+    P_inv = mat_inverse(P, q) if P is not None else None
+    if P_inv is None:
+        raise UpdateFailed("could not extend the columns of B' to a basis")
+
+    for _ in range(attempts):
+        E2, F2 = sample_E_F(n, q, rng)
+        F_cols = [[F2[i][j] for i in range(n)] for j in range(2)]
+        if column_rank(F_cols, n, q) != 2:
+            continue
+        Q = extend_to_basis(F_cols, n, q)
+        if Q is None:
+            continue
+        T2 = mat_mul(Q, P_inv, q)              # T'.B' = F'
+        T2_inv = mat_inverse(T2, q)
+        if T2_inv is None:
+            continue
+        shift = mat_vec_row(E2, T2, q)         # E'.T'
+        A_new = [(A[i] + shift[i]) % q for i in range(n)]
+        witnesses = {
+            "E": E, "F": F, "T": T, "T_inv": T_inv,
+            "E2": E2, "F2": F2, "T2": T2, "T2_inv": T2_inv,
+        }
+        return A_new, B_new, witnesses
+
+    raise UpdateFailed(
+        "could not sample (E', F') of rank 2 in {} attempts".format(attempts))
 
 
 # --------------------------------------------------------------------------
@@ -394,20 +516,40 @@ def main():
           "prover oracle calls = {}".format(verifier.prover_oracle_calls))
     print()
 
-    # -- 7. Validity across a refresh ---------------------------------------
-    print("[7] The same retained pair after a key refresh")
-    A2, B2 = refresh(A, B, q, rng)
+    # -- 7. Validity across the source's key update --------------------------
+    print("[7] The same retained pair after the source's key update")
+    try:
+        A2, B2, wit = update(A, B, q, rng)
+    except UpdateFailed as exc:
+        print("    ERROR: the update algorithm failed: {}".format(exc))
+        return 1
     X2 = mat_vec_row(A2, B2, q)
     pk2 = (pow(g1, X2[0], p) * pow(g2, X2[1], p)) % p
-    print("    product-preserving refresh, not the source's exact Update")
-    check("A6a", "refresh preserves the decoded pair and the public key",
+    state_bits2 = serialize_state(A2, B2, w)
+    print("    Update as printed in the source: B' = B + T.F, A' = A + E'.T'")
+    check("A6a", "the update preserves the decoded pair and the public key",
           list(X2) == list(X) and pk2 == pk,
           "A'.B' = A.B and pk unchanged")
-    check("A6b", "both stored components actually changed",
-          list(A2) != list(A) and B2 != B, "A' != A and B' != B")
+    check("A6b", "the stored key actually changed",
+          list(A2) != list(A) or B2 != B, "sk' != sk")
+    check("A6c", "the stored key keeps its length",
+          len(state_bits2) == len(state_bits),
+          "|sk'| = |sk| = {} bits".format(len(state_bits2)))
+    check("A6d", "the update's own constraints hold: E.F = 0 and E'.F' = 0",
+          mat_vec_row(wit["E"], wit["F"], q) == [0, 0]
+          and mat_vec_row(wit["E2"], wit["F2"], q) == [0, 0],
+          "both leakage-free products vanish")
+    check("A6e", "T and T' are non-singular",
+          wit["T_inv"] is not None and wit["T2_inv"] is not None,
+          "both inverses exist over Z_q")
+    check("A6f", "the update's defining equations hold: A.T = E and T'.B' = F'",
+          mat_vec_row(A, wit["T"], q) == [x % q for x in wit["E"]]
+          and mat_mul(wit["T2"], B2, q) == [[x % q for x in row]
+                                            for row in wit["F2"]],
+          "both verified directly")
     verifier2 = Verifier(p, q, g1, g2, pk2, rng)
     accepted2, _ = impersonate(verifier2, recovered, rng, p, q, g1, g2)
-    check("A6c", "the pair retained before the refresh still authenticates",
+    check("A6g", "the pair retained before the update still authenticates",
           accepted2, "accept = {}".format(1 if accepted2 else 0))
     print()
 

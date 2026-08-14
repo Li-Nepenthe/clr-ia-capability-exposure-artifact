@@ -9,7 +9,7 @@ python3 demo.py
 Expected final line:
 
 ```
-RESULT: all 13 checks passed.
+RESULT: all 17 checks passed.
 ```
 
 The impersonation session prints `accept = 1`, and the exit code is `0`. The
@@ -31,9 +31,13 @@ term of the advertised allowance; the printed note records that this term
 ignores the subtracted `omega(log kappa)` slack and is therefore not the
 theorem's exact allowance. Step 5 answers a freshly drawn challenge from the
 retained pair and prints the verifier's accept bit. Step 6 confirms no
-honest-prover oracle call was made. Step 7 applies a product-preserving refresh
-— not the source's exact update algorithm — and confirms the pair retained
-beforehand still authenticates. Step 8 recovers the same pair through two
+honest-prover oracle call was made. Step 7 runs the analyzed key update exactly
+as the source prints it — sample `E != 0` and `F` with `E.F = 0`, take a
+non-singular `T` with `A.T = E`, set `B' = B + T.F`, then sample `E'`, `F'` the
+same way, take a non-singular `T'` with `T'.B' = F'`, and set `A' = A + E'.T'`
+— checks its defining equations and that `A'B' = A.B` with `pk` unchanged, and
+confirms the pair retained beforehand still authenticates. Step 8 recovers the
+same pair through two
 component-local queries totalling exactly `(n+2)w + 2` bits. Step 9 confirms an
 incorrect pair is rejected, so the check in step 5 is not vacuous. Step 10
 prints the analyzed article's identifiers, hash, and page locators.
