@@ -551,10 +551,43 @@ def main():
     accepted2, _ = impersonate(verifier2, recovered, rng, p, q, g1, g2)
     check("A6g", "the pair retained before the update still authenticates",
           accepted2, "accept = {}".format(1 if accepted2 else 0))
+    # A is still the pre-update component; B2 is the refreshed one.
+    bridge = mat_vec_row(A, B2, q)
+    check("A6h", "the cross-epoch bridge: old A times refreshed B is still X",
+          list(bridge) == list(X),
+          "A_i . B_(i+1) = X")
     print()
 
-    # -- 8. Component-local reading (R2) ------------------------------------
-    print("[8] Two component-local queries (R2)")
+    # -- 8. Cross-epoch chain under R3 ---------------------------------------
+    print("[8] Cross-epoch capability exposure (R3), one query per round")
+    # Round i: the pair (f_A, z_B). f_A reads only A; z_B is a constant bit.
+    r_i_a = f_A_component(A, w)
+    r_i_b = "0"
+    r_i_len = len(r_i_a) + len(r_i_b)
+    alpha = [dec(r_i_a[j * w:(j + 1) * w]) for j in range(n)]
+    print("    round i   (f_A, z_B) -> A_i     : {} bits".format(r_i_len))
+    check("A9a", "round i output is exactly nw + 1 bits",
+          r_i_len == n * w + 1, "{} bits = {}*{} + 1".format(r_i_len, n, w))
+    # The update between rounds is the one already performed above:
+    # (A, B) -> (A2, B2). The second query reads the refreshed B only.
+    r_j_a = "0"
+    r_j_b = f_B_with_hardwired_A(B2, alpha, w, q)
+    r_j_len = len(r_j_a) + len(r_j_b)
+    cross = (dec(r_j_b[:w]), dec(r_j_b[w:]))
+    print("    round i+1 (z_A, f_B,alpha) -> X : {} bits".format(r_j_len))
+    check("A9b", "round i+1 output is exactly 2w + 1 bits",
+          r_j_len == 2 * w + 1, "{} bits = 2*{} + 1".format(r_j_len, w))
+    check("A9c", "the round i+1 output equals X, read from the refreshed B",
+          list(cross) == list(X), "recovered X from B_(i+1)")
+    verifier3 = Verifier(p, q, g1, g2, pk2, rng)
+    accepted3, _ = impersonate(verifier3, cross, rng, p, q, g1, g2)
+    check("A9d", "the cross-epoch pair authenticates on a fresh challenge",
+          accepted3, "accept = {}".format(1 if accepted3 else 0))
+    print("    total across the two rounds     : {} bits".format(r_i_len + r_j_len))
+    print()
+
+    # -- 9. Component-local reading (R2) ------------------------------------
+    print("[9] Two component-local queries (R2)")
     q1_a = f_A_component(A, w)
     q1_b = "0"                       # 1-bit constant on the B side
     q1_len = len(q1_a) + len(q1_b)
@@ -572,8 +605,8 @@ def main():
           list(recovered_r2) == list(recovered), "same X as step 3")
     print()
 
-    # -- 9. Negative control -------------------------------------------------
-    print("[9] Negative control")
+    # -- 10. Negative control ------------------------------------------------
+    print("[10] Negative control")
     wrong = ((X[0] + 1) % q, X[1])
     verifier3 = Verifier(p, q, g1, g2, pk, rng)
     accepted3, _ = impersonate(verifier3, wrong, rng, p, q, g1, g2)
@@ -581,8 +614,8 @@ def main():
           not accepted3, "accept = {}".format(1 if accepted3 else 0))
     print()
 
-    # -- 10. Source binding --------------------------------------------------
-    print("[10] Analyzed source")
+    # -- 11. Source binding --------------------------------------------------
+    print("[11] Analyzed source")
     here = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(here, "sources.json"), "r") as handle:
         sources = json.load(handle)
