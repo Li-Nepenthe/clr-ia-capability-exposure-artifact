@@ -9,7 +9,7 @@ python3 demo.py
 Expected final line:
 
 ```
-RESULT: all 17 checks passed.
+RESULT: all 22 checks passed.
 ```
 
 The impersonation session prints `accept = 1`, and the exit code is `0`. The
@@ -31,15 +31,34 @@ term of the advertised allowance; the printed note records that this term
 ignores the subtracted `omega(log kappa)` slack and is therefore not the
 theorem's exact allowance. Step 5 answers a freshly drawn challenge from the
 retained pair and prints the verifier's accept bit. Step 6 confirms no
-honest-prover oracle call was made. Step 7 runs the analyzed key update exactly
-as the source prints it — sample `E != 0` and `F` with `E.F = 0`, take a
+honest-prover oracle call was made.
+
+Step 7 runs the analyzed key update as a **constraint-faithful implementation of
+the printed update equations** — sample `E != 0` and `F` with `E.F = 0`, take a
 non-singular `T` with `A.T = E`, set `B' = B + T.F`, then sample `E'`, `F'` the
-same way, take a non-singular `T'` with `T'.B' = F'`, and set `A' = A + E'.T'`
-— checks its defining equations and that `A'B' = A.B` with `pk` unchanged, and
-confirms the pair retained beforehand still authenticates. Step 8 recovers the
+same way, take a non-singular `T'` with `T'.B' = F'`, and set `A' = A + E'.T'`.
+It satisfies every constraint the source states, while adding sampling
+conditions for tractability rather than reproducing the source's sampling
+distributions; the cross-epoch bridge below depends only on `A.T = E` and
+`E.F = 0`, so it is unaffected by that difference. Step 7 checks the update's
+defining equations, that `A'B' = A.B` with `pk` unchanged, and that the stored
+length is preserved — the three observations the accompanying paper reports as
+one combined table row — and confirms the pair retained beforehand still
+authenticates. It then checks the **cross-epoch bridge**: the pre-update `A`
+multiplied by the refreshed `B` is still `X`.
+
+Step 8 runs the full cross-epoch chain, one pair-valued query per round. In
+round `i` the pair `(f_A, z_B)` returns `A_i`; the update then runs; in round
+`i+1` the pair `(z_A, f_B,alpha)` reads **only the refreshed `B`**, with
+`alpha = A_i` hardwired into the second function's description rather than read
+from `B`, and its output is `X`. Both output lengths are measured by the code
+and checked against `nw + 1` and `2w + 1`. The recovered pair then authenticates
+on a fresh challenge.
+
+Step 9 recovers the
 same pair through two
-component-local queries totalling exactly `(n+2)w + 2` bits. Step 9 confirms an
-incorrect pair is rejected, so the check in step 5 is not vacuous. Step 10
+component-local queries totalling exactly `(n+2)w + 2` bits. Step 10 confirms an
+incorrect pair is rejected, so the check in step 5 is not vacuous. Step 11
 prints the analyzed article's identifiers, hash, and page locators.
 
 ## Scope
