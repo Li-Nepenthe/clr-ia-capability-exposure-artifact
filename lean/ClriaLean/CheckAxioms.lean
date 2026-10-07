@@ -1,0 +1,99 @@
+import ClriaLean
+
+-- Step 1: CLR-IA authentication and update algebra
+#print axioms Clria.row_apply
+#print axioms Clria.capability_accepts
+#print axioms Clria.honest_accepts
+#print axioms Clria.theta_of_two_reps
+#print axioms Clria.rewind_extracts_X
+#print axioms Clria.trapdoor_witness
+#print axioms Clria.bridge
+#print axioms Clria.stages_preserve_product
+#print axioms Clria.IsUpdate.bridge
+#print axioms Clria.IsUpdate.product
+#print axioms Clria.update_chain_product
+#print axioms Clria.update_chain_bridge
+#print axioms Clria.bridge_one_direction
+-- Step 2: budgets and concrete values
+#print axioms Clria.Params.L_split
+#print axioms Clria.Params.joint_margins
+#print axioms Clria.Params.split_margins
+#print axioms Clria.Params.cross_i_margins
+#print axioms Clria.Params.cross_next_margins
+#print axioms Clria.Params.margins_at_16
+#print axioms Clria.Params.margin_growth
+#print axioms Clria.Params.margins_pos
+#print axioms Clria.Params.copy_excess
+#print axioms Clria.Params.widths_16_256
+#print axioms Clria.Params.rounded_percentages
+#print axioms Clria.Params.s4e_percentages_not_implied
+#print axioms Clria.Params.s4e_percentages_valid
+#print axioms Clria.Params.s4e_exact
+#print axioms Clria.Params.s4e_bound
+#print axioms Clria.Params.any_value
+#print axioms Clria.Params.secure_fraction
+#print axioms Clria.Params.attack_fraction
+#print axioms Clria.Params.ibkem_cap_exceeded
+#print axioms Clria.Params.ibe_window
+#print axioms Clria.Params.ibe_copy_exceeds
+#print axioms Clria.Params.zhouyang_window
+-- Step 3: identity-based algebra
+#print axioms Clria.IBKEM.capability
+#print axioms Clria.IBKEM.recovers_key
+#print axioms Clria.IBKEM.mu_neg_one
+#print axioms Clria.IBKEM.update_keeps_R
+#print axioms Clria.IBKEM.hybrid_identity
+#print axioms Clria.IBE.normalization
+#print axioms Clria.IBE.recovery
+#print axioms Clria.IBE.update_persistence
+#print axioms Clria.IBE.zhouyang_invalid_accept
+#print axioms Clria.IBE.zhouyang_header_invalid
+-- Step 4: fiber counts, resampler, Lemma 2
+#print axioms Clria.Fiber.card_dot_fiber
+#print axioms Clria.Fiber.card_fiber_fixed_A
+#print axioms Clria.Fiber.card_key_fiber
+#print axioms Clria.Fiber.card_line
+#print axioms Clria.Fiber.card_keys_given_pk
+#print axioms Clria.Fiber.fiber_charge
+#print axioms Clria.Fiber.printed_charge_exceeds
+#print axioms Clria.Fiber.mul_Bp
+#print axioms Clria.Fiber.Bp_add_smul
+#print axioms Clria.Fiber.res_correct
+#print axioms Clria.Fiber.res_uniform
+#print axioms Clria.Fiber.fiber_weight_le
+#print axioms Clria.Fiber.exists_weight_ge
+#print axioms Clria.Projection.lemma2a
+#print axioms Clria.Projection.lemma2b
+-- Step 5: refresh limits and the splice
+#print axioms Clria.RefreshLimit.witness_of_responses
+#print axioms Clria.RefreshLimit.nontrivial_relation
+#print axioms Clria.RefreshLimit.clria_witness_is_product
+#print axioms Clria.RefreshLimit.splice_chunks
+#print axioms Clria.RefreshLimit.periods_bound
+#print axioms Clria.RefreshLimit.one_period
+-- Step 6: witnesses against two proof steps
+#print axioms Clria.ProofWitness.claim2_fiber
+#print axioms Clria.ProofWitness.claim2_ratio
+#print axioms Clria.ProofWitness.one_tag_per_state
+#print axioms Clria.ProofWitness.fresh_tags
+#print axioms Clria.ProofWitness.fresh_tags_prob
+#print axioms Clria.ProofWitness.interpolation_count
+#print axioms Clria.ProofWitness.sd_determined
+#print axioms Clria.ProofWitness.sd_upper
+#print axioms Clria.ProofWitness.event_le_sd
+#print axioms Clria.ProofWitness.predictor_bound
+-- Step 7: local repairs
+#print axioms Clria.Repairs.collSeeds_card
+#print axioms Clria.Repairs.collide_at_one
+#print axioms Clria.Repairs.collide_prob
+#print axioms Clria.Repairs.collision_identity
+#print axioms Clria.Repairs.cp_ge
+#print axioms Clria.Repairs.sum_abs_le_sqrt
+#print axioms Clria.Repairs.family_bound
+#print axioms Clria.Repairs.final_bound
+#print axioms Clria.Repairs.df_fiber
+#print axioms Clria.Repairs.df_bad_event
+#print axioms Clria.Repairs.df_conditional
+#print axioms Clria.Repairs.df_deficit
+#print axioms Clria.Repairs.df_thresholds
+#print axioms Clria.Repairs.df_conversion

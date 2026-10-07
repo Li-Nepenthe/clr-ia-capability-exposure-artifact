@@ -61,12 +61,34 @@ component-local queries totalling exactly `(n+2)w + 2` bits. Step 10 confirms an
 incorrect pair is rejected, so the check in step 5 is not vacuous. Step 11
 prints the analyzed article's identifiers, hash, and page locators.
 
+## Lean 4 proofs
+
+`lean/ClriaLean/` is a Lean 4 development (Lean v4.34.1, Mathlib v4.34.1). It
+proves, for all parameters, the algebraic identities, counts and numerical
+bounds that the accompanying paper uses: 90 theorems, each depending only on
+Lean's standard axioms (`propext`, `Classical.choice`, `Quot.sound`), with no
+`sorry` and no `native_decide`. `lean/ClriaLean/README.md` maps each statement
+of the paper to its theorem. To check:
+
+```
+cd lean/ClriaLean
+lake exe cache get
+lake build
+lake env lean CheckAxioms.lean
+```
+
+`lake exe cache get` downloads prebuilt Mathlib (about 5 GB unpacked); the build
+should end with "Build completed successfully" and no warnings.
+
 ## Scope
 
-These checks cover the finite, mechanically verifiable layer only. The script
-computes no discrete logarithm, performs no rewinding, establishes no theorem,
-and measures no timing. The analytical arguments live in the accompanying
-paper, not here.
+The Python script checks one concrete instance (`n = 16`, `w = 256`) of the
+finite, mechanically verifiable layer; it computes no discrete logarithm,
+performs no rewinding and measures no timing. The Lean development proves the
+algebra, counts and numerical bounds for all parameters. The reductions to the
+discrete-logarithm, DBDH and target-collision assumptions, the rewinding
+analysis and the security games are argued in the accompanying paper, not
+here.
 
 ## The analyzed article
 
