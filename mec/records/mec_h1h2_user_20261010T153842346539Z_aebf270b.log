@@ -1,0 +1,10 @@
+MEC session attacks: local reproduction (artifact)
+Started UTC: 2026-10-10T15:38:42.346913+00:00
+Command argv: ["<python>", "-X", "utf8", "-B", "mec/world.py", "--bits", "256", "--n", "16", "--seed", "20261009", "--b0", "7", "--output", "mec/records/mec_h1h2_user_20261010T153842346539Z_aebf270b.json"]
+Working directory: <artifact> (repository root)
+Execution witness only; see mec/README.md for boundaries.
+{"status": "PASS", "checks": 197, "failed": [], "processes": 30, "successful_updates": 18, "h1_cases": 10, "h2_cases": 20}
+mec/records/mec_h1h2_user_20261010T153842346539Z_aebf270b.json
+World exit code: 0
+Launcher result: PASS
+Finished UTC: 2026-10-10T15:38:44.283831+00:00
