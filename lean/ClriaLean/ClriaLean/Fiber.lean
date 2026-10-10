@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # Fiber counts and the resampler
 
-Main paper, Section VI-A and Lemma 2; Supplement S4-A and S4-B. `K` is a finite field
+Main paper, Section V-A and Lemma 2; Supplement S4-A and S4-B. `K` is a finite field
 with `q = |K|`. Uniform distributions are stated as counts of finite sets.
 -/
 
@@ -93,7 +93,7 @@ lemma card_ne_zero_mat [Fintype K] :
     Fintype.card_fin, Fintype.card_fin, mul_one] at h
   omega
 
-/-- Main paper, Section VI-A, and Supplement S4-A: each `X` has exactly
+/-- Main paper, Section V-A, and Supplement S4-A: each `X` has exactly
 `F = (q^n - 1) q^{2n-2}` keys `(A, B)` with `A ≠ 0` and `AB = X`. -/
 theorem card_key_fiber [Fintype K] (X : Matrix (Fin 1) (Fin 2) K) :
     Nat.card {p : Matrix (Fin 1) (Fin n) K × Matrix (Fin n) (Fin 2) K //

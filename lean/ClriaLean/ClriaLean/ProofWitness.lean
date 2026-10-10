@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # Witnesses against two proof steps
 
-Main paper, Section VIII-C; Supplement S7-A (Zhou and Yang, Claim 2) and S7-B
+Main paper, Section VIII-C; Supplement S8-A (Zhou and Yang, Claim 2) and S8-B
 (Zhou et al., the extraction step). `K` is a finite field with `q = |K|`; uniform choices
 are stated as counts, and statistical distance is `½ Σ |P - Q|` on finite types.
 -/
@@ -16,7 +16,7 @@ section Claim2
 
 variable {K : Type*} [Field K] [Fintype K]
 
-/-- Main paper, Section VIII-C, and Supplement S7-A: for uniform key coordinates
+/-- Main paper, Section VIII-C, and Supplement S8-A: for uniform key coordinates
 `(t₁, t₂)`, an invalid header is accepted exactly when `μ t₁ + t₂` takes one value, an event
 on a fiber of `q` keys, i.e. probability `q/q² = 1/q`. -/
 theorem claim2_fiber (μ z : K) :
@@ -44,7 +44,7 @@ theorem claim2_ratio (q : ℚ) (hq : 2 ≤ q) : q / q ^ 2 = 1 / q ∧ 1 / q ^ 3 
     nlinarith
 
 omit [Fintype K] in
-/-- Supplement S7-A: every fixed state accepts exactly one tag. -/
+/-- Supplement S8-A: every fixed state accepts exactly one tag. -/
 theorem one_tag_per_state (μ t₁ t₂ : K) : Nat.card {z : K // μ * t₁ + t₂ = z} = 1 := by
   let e : {z : K // μ * t₁ + t₂ = z} ≃ Unit :=
     { toFun := fun _ => ()
@@ -54,7 +54,7 @@ theorem one_tag_per_state (μ t₁ t₂ : K) : Nat.card {z : K // μ * t₁ + t�
   rw [Nat.card_congr e, Nat.card_unique]
 
 omit [Field K] in
-/-- Supplement S7-A: `d` fresh uniform tags hit the accepted one with probability
+/-- Supplement S8-A: `d` fresh uniform tags hit the accepted one with probability
 `1 - (1 - 1/q)^d`; as a count, `q^d - (q - 1)^d` tag tuples contain it. -/
 theorem fresh_tags (z₀ : K) (d : ℕ) :
     Nat.card {zs : Fin d → K // ∃ i, zs i = z₀} =
@@ -87,7 +87,7 @@ theorem fresh_tags_prob (q : ℚ) (hq : 0 < q) (d : ℕ) :
 
 end Claim2
 
-/-! ## Interpolation counts (Supplement S7-A) -/
+/-! ## Interpolation counts (Supplement S8-A) -/
 
 section Interpolation
 
@@ -153,7 +153,7 @@ lemma low_unique {x : Fin 3 → K} (hx : Function.Injective x) (y : Fin 3 → K)
   · rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]
   · rw [← (hM c).mp hc, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]
 
-/-- Supplement S7-A: for three distinct points, every triple of values has exactly `q`
+/-- Supplement S8-A: for three distinct points, every triple of values has exactly `q`
 interpolating polynomials of degree at most three, and `q - 1` of degree exactly three. -/
 theorem interpolation_count {x : Fin 3 → K} (hx : Function.Injective x) (y : Fin 3 → K) :
     Nat.card {c : Fin 4 → K // ∀ i, ev c (x i) = y i} = Fintype.card K ∧
@@ -213,7 +213,7 @@ theorem interpolation_count {x : Fin 3 → K} (hx : Function.Injective x) (y : F
 
 end Interpolation
 
-/-! ## Statistical distance (Supplement S7-B) -/
+/-! ## Statistical distance (Supplement S8-B) -/
 
 section Distance
 
@@ -256,7 +256,7 @@ lemma sum_abs_le (r : W → ℝ) (hr : ∀ w, 0 ≤ r w) :
   rw [this]
   linarith
 
-/-- Supplement S7-B, eq. (h2perfect): if the view determines `W`, the joint distribution of
+/-- Supplement S8-B, eq. (S6): if the view determines `W`, the joint distribution of
 (view, `W`) is at distance exactly `1 - 1/N` from (view, uniform), `N = 2^{l_k}`. -/
 theorem sd_determined [DecidableEq W] (PV : V → ℝ) (hPV : ∀ v, 0 ≤ PV v) (hsum : ∑ v, PV v = 1)
     (f : V → W) :
@@ -289,7 +289,7 @@ theorem sd_determined [DecidableEq W] (PV : V → ℝ) (hPV : ∀ v, 0 ≤ PV v)
   simp only [hrow, ← sum_mul, ← mul_sum, hsum]
   ring
 
-/-- Supplement S7-B, upper bounds in eqs. (h2perfect) and (h2error): every joint distribution
+/-- Supplement S8-B, upper bounds in eqs. (S6) and (S7): every joint distribution
 of (view, `W`) with view marginal `PV` is within `1 - 1/N` of (view, uniform). -/
 theorem sd_upper (R : V × W → ℝ) (hR : ∀ p, 0 ≤ R p) (PV : V → ℝ)
     (hrow : ∀ v, ∑ w, R (v, w) = PV v) (hPV : ∑ v, PV v = 1) :
@@ -327,7 +327,7 @@ theorem event_le_sd {α : Type*} [Fintype α] (P Q : α → ℝ) (hP : ∑ a, P 
   rw [← sum_sub_distrib]
   linarith
 
-/-- Supplement S7-B, eq. (h2error): if a predictor from the view recovers the extractor
+/-- Supplement S8-B, eq. (S7): if a predictor from the view recovers the extractor
 output with probability at least `1 - ρ`, the joint distance is at least `1 - ρ - 1/N`;
 under the uniform side the test `w = g(v)` has probability exactly `1/N`. -/
 theorem predictor_bound [DecidableEq W] (R : V × W → ℝ) (PV : V → ℝ) (hR : ∑ p, R p = 1)

@@ -4,8 +4,8 @@ import ClriaLean.Fiber
 /-!
 # Local repairs: exact counts
 
-Supplement S8. Part S8-B: the seeded family `H_η(X, Y) = X Y^η`, written on exponents as
-`A + η B` with `η ∈ K^*`. Part S8-A: the Dziembowski–Faust scalar witness and the corrected
+Supplement S9. Part S9-B: the seeded family `H_η(X, Y) = X Y^η`, written on exponents as
+`A + η B` with `η ∈ K^*`. Part S9-A: the Dziembowski–Faust scalar witness and the corrected
 probability conversion. `K` is a finite field with `q = |K|`.
 -/
 
@@ -13,7 +13,7 @@ namespace Clria.Repairs
 
 open Finset
 
-/-! ## S8-B: collisions of `A + ηB` -/
+/-! ## S9-B: collisions of `A + ηB` -/
 
 section Family
 
@@ -27,7 +27,7 @@ instance (η : K) (z z' : K × K) : Decidable (Coll η z z') := by unfold Coll; 
 /-- Nonzero seeds on which `z` and `z'` collide. -/
 def collSeeds (z z' : K × K) : Finset K := univ.filter fun η => η ≠ 0 ∧ Coll η z z'
 
-/-- Supplement S8-B: when both coordinates agree every nonzero seed collides, when exactly
+/-- Supplement S9-B: when both coordinates agree every nonzero seed collides, when exactly
 one agrees none does, and otherwise exactly one does. As a single count:
 `#{η ≠ 0 : collide} = q·[z = z'] + 1 - [A = A'] - [B = B']`. -/
 theorem collSeeds_card (z z' : K × K) :
@@ -79,7 +79,7 @@ theorem collSeeds_card (z z' : K × K) :
     simp [this, hA, hB]
 
 omit [Fintype K] [DecidableEq K] in
-/-- Supplement S8-B: the distinct pairs `(h², h)` and `(h, h²)`, i.e. `(2, 1)` and `(1, 2)`
+/-- Supplement S9-B: the distinct pairs `(h², h)` and `(h, h²)`, i.e. `(2, 1)` and `(1, 2)`
 on exponents, collide exactly at `η = 1`. -/
 theorem collide_at_one (η : K) : Coll η ((2 : K), (1 : K)) ((1 : K), (2 : K)) ↔ η = 1 := by
   simp only [Coll]
@@ -103,7 +103,7 @@ def CB : ℝ := ∑ z, ∑ z', P z * P z' * (if z.2 = z'.2 then 1 else 0)
 /-- `CP(A + ηB) = Pr[A + ηB = A' + ηB']`. -/
 def CPeta (η : K) : ℝ := ∑ z, ∑ z', P z * P z' * (if Coll η z z' then 1 else 0)
 
-/-- Supplement S8-B, eq. (S5): `Σ_{η ≠ 0} CP(A + ηB) = q C_Z + 1 - C_A - C_B`, so the
+/-- Supplement S9-B, eq. (S8): `Σ_{η ≠ 0} CP(A + ηB) = q C_Z + 1 - C_A - C_B`, so the
 average over the `q - 1` nonzero seeds is `(q C_Z + 1 - C_A - C_B)/(q - 1)`. -/
 theorem collision_identity (hP : ∑ z, P z = 1) :
     ∑ η ∈ univ.filter (fun η : K => η ≠ 0), CPeta P η =
@@ -167,7 +167,7 @@ lemma cp_ge {X : Type*} [Fintype X] [Nonempty X] (p : X → ℝ) (hp : ∑ x, p 
   rw [div_le_iff₀ hN]
   linarith
 
-/-- Supplement S8-B: `SD(V, U) ≤ ½ √(N·CP(V) - 1)`, written as
+/-- Supplement S9-B: `SD(V, U) ≤ ½ √(N·CP(V) - 1)`, written as
 `Σ |p - 1/N| ≤ √(N Σ p² - 1)`. -/
 lemma sum_abs_le_sqrt {X : Type*} [Fintype X] [Nonempty X] (p : X → ℝ) (hp : ∑ x, p x = 1) :
     ∑ x, |p x - 1 / Fintype.card X| ≤ Real.sqrt (Fintype.card X * ∑ x, p x ^ 2 - 1) := by
@@ -202,7 +202,7 @@ lemma sum_sqrt_le {ι : Type*} (s : Finset ι) (a : ι → ℝ) (ha : ∀ i ∈ 
 /-- Distribution of `A + ηB`. -/
 def dist (η : K) (t : K) : ℝ := ∑ z, if z.1 + η * z.2 = t then P z else 0
 
-/-- Supplement S8-B, unconditional bound: averaged over the `q - 1` nonzero seeds,
+/-- Supplement S9-B, unconditional bound: averaged over the `q - 1` nonzero seeds,
 `SD((A + ηB, η), (U, η)) ≤ ½ √((q² C_Z - 1)/(q - 1))`. -/
 theorem family_bound (hP : ∑ z, P z = 1) (hq : 2 ≤ Fintype.card K) :
     (1 / ((Fintype.card K : ℝ) - 1)) * ∑ η ∈ univ.filter (fun η : K => η ≠ 0),
@@ -290,7 +290,7 @@ theorem family_bound (hP : ∑ z, P z = 1) (hq : 2 ≤ Fintype.card K) :
         rw [hsq]
         ring
 
-/-- Supplement S8-B, eq. (familyrepair-detail), last step: for `log p ≤ k`, i.e.
+/-- Supplement S9-B, eq. (S9), last step: for `log p ≤ k`, i.e.
 `x = 2^{-k} ≤ 1/p`, `½ √((p² x - 1)/(p - 1)) ≤ ½ √(p x)`. -/
 theorem final_bound (p x : ℝ) (hp : 1 < p) (hx : x ≤ 1 / p) :
     (1 / 2) * Real.sqrt ((p ^ 2 * x - 1) / (p - 1)) ≤ (1 / 2) * Real.sqrt (p * x) := by
@@ -304,13 +304,13 @@ theorem final_bound (p x : ℝ) (hp : 1 < p) (hx : x ≤ 1 / p) :
 
 end Family
 
-/-! ## S8-A: the Dziembowski–Faust scalar witness -/
+/-! ## S9-A: the Dziembowski–Faust scalar witness -/
 
 section DF
 
 variable {K : Type*} [Field K] [Fintype K] [DecidableEq K] {n : ℕ}
 
-/-- Supplement S8-A: for `L ≠ 0`, the nonzero right vectors with `⟨L, R⟩ = t` number
+/-- Supplement S9-A: for `L ≠ 0`, the nonzero right vectors with `⟨L, R⟩ = t` number
 `N/q - 1` for `t = 0` and `N/q` otherwise (`N = q^n`). -/
 theorem df_fiber {L : Fin n → K} (hL : L ≠ 0) (t : K) :
     Nat.card {R : Fin n → K // R ≠ 0 ∧ L ⬝ᵥ R = t} =
@@ -336,7 +336,7 @@ theorem df_fiber {L : Fin n → K} (hL : L ≠ 0) (t : K) :
     rw [this, hfib]
     simp [ht]
 
-/-- Supplement S8-A: `Pr[Ḡ] = Pr[L = l₀ ∨ R = 0] = 2/N` for independent uniform `L ≠ 0` and
+/-- Supplement S9-A: `Pr[Ḡ] = Pr[L = l₀ ∨ R = 0] = 2/N` for independent uniform `L ≠ 0` and
 `R`, since `1/(N - 1) + 1/N - 1/(N(N - 1)) = 2/N`. -/
 theorem df_bad_event (N : ℝ) (hN : 1 < N) : 1 / (N - 1) + 1 / N - 1 / (N * (N - 1)) = 2 / N := by
   have h1 : N - 1 ≠ 0 := by linarith
@@ -344,7 +344,7 @@ theorem df_bad_event (N : ℝ) (hN : 1 < N) : 1 / (N - 1) + 1 / N - 1 / (N * (N 
   field_simp
   ring
 
-/-- Supplement S8-A: given `G`, `Pr[T = 0 | G] = (N/q - 1)/(N - 1)` and
+/-- Supplement S9-A: given `G`, `Pr[T = 0 | G] = (N/q - 1)/(N - 1)` and
 `Pr[T = t | G] = N/(q(N - 1))` for `t ≠ 0`; these sum to `1` and have distance
 `d_G = (q - 1)/(q(N - 1))` from uniform on `q` values. -/
 theorem df_conditional (q N : ℝ) (hq : 1 < q) (hN : 1 < N) :
@@ -362,7 +362,7 @@ theorem df_conditional (q N : ℝ) (hq : 1 < q) (hN : 1 < N) :
   field_simp
   ring
 
-/-- Supplement S8-A: the entropy deficit of `T | G` is `log₂[N/(N - 1)]`. -/
+/-- Supplement S9-A: the entropy deficit of `T | G` is `log₂[N/(N - 1)]`. -/
 theorem df_deficit (q N : ℝ) (hq : 1 < q) (hN : 1 < N) :
     -Real.logb 2 (N / (q * (N - 1))) = Real.logb 2 q - Real.logb 2 (N / (N - 1)) := by
   have hq0 : 0 < q := by linarith
@@ -372,7 +372,7 @@ theorem df_deficit (q N : ℝ) (hq : 1 < q) (hN : 1 < N) :
     Real.logb_div (by positivity) hq0.ne']
   ring
 
-/-- Supplement S8-A: with `γ = 1/8` and `N > 17`, the thresholds `k_L = log₂(N - 1) - 4` and
+/-- Supplement S9-A: with `γ = 1/8` and `N > 17`, the thresholds `k_L = log₂(N - 1) - 4` and
 `k_R = log₂ N - 4` are positive, and the predicate-zero branches stay above them:
 `log₂(N - 2) > k_L` and `log₂(N - 1) > k_R`. -/
 theorem df_thresholds (N : ℝ) (hN : 17 < N) :
@@ -393,7 +393,7 @@ theorem df_thresholds (N : ℝ) (hN : 17 < N) :
   refine ⟨hpos _ (by linarith), hpos _ (by linarith), key _ _ (by linarith) (by linarith)
     (by linarith), key _ _ (by linarith) (by linarith) (by linarith)⟩
 
-/-- Supplement S8-A, corrected conversion: with bad-event mass `β ≤ 2γ`,
+/-- Supplement S9-A, corrected conversion: with bad-event mass `β ≤ 2γ`,
 `η = m(a + γ)` and `m ≥ 1`, `M(1 - β)η + Mβ/2 ≤ Mη + Mγ ≤ 2Mm(a + γ) = ε_LRS`. -/
 theorem df_conversion (M β γ a m : ℝ) (hM : 0 ≤ M) (hβ0 : 0 ≤ β) (hβ : β ≤ 2 * γ)
     (ha : 0 ≤ a) (hγ : 0 ≤ γ) (hm : 1 ≤ m) :

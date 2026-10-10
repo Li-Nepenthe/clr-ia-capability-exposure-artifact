@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # CLR-IA: authentication algebra and the two-representation step
 
-Main paper, Sections II, IV–VII. The group of prime order `q` is written
+Main paper, Sections III–VI. The group of prime order `q` is written
 additively as a `K`-module `G`, so `g₁^{x₁} g₂^{x₂}` becomes `x₁ • g₁ + x₂ • g₂`.
 A cyclic group of prime order `q` with `K = ZMod q` is the one-dimensional case;
 every statement below holds for an arbitrary `K`-module.
@@ -15,7 +15,7 @@ namespace Clria
 
 variable {K : Type*} [Field K] {G : Type*} [AddCommGroup G] [Module K G]
 
-/-- `g^X = g₁^{x₁} g₂^{x₂}` (main paper, Section II), written additively. -/
+/-- `g^X = g₁^{x₁} g₂^{x₂}` (main paper, Section III-A), written additively. -/
 def gpow (g₁ g₂ : G) (X : Fin 2 → K) : G := X 0 • g₁ + X 1 • g₂
 
 /-- The pair `X = AB` as a vector, for `A ∈ K^{1×n}` and `B ∈ K^{n×2}`. -/
@@ -72,7 +72,7 @@ theorem theta_of_two_reps (g₁ g₂ : G) (hg₁ : g₁ ≠ 0) {X X' : Fin 2 →
       congr 1
       rw [show X' 1 - X 1 = -(X 1 - X' 1) by ring, div_neg, neg_div, neg_neg, div_eq_inv_mul]
 
-/-- Main paper, eq. (12) and Section VI-A: rewinding with a fixed nonce `r` on two
+/-- Main paper, eq. (12) and Section V-A: rewinding with a fixed nonce `r` on two
 distinct challenges extracts `(v - v')/(c - c') = X`, so the extracted key always
 equals the attacker's `X` (the source's event `E₂`). -/
 theorem rewind_extracts_X (X r : Fin 2 → K) {c c' : K} (hc : c ≠ c') :

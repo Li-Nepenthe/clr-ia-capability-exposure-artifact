@@ -3,8 +3,8 @@ import Mathlib
 /-!
 # Budget arithmetic and concrete values
 
-Main paper, Sections V–VI and Corollary 11; Supplement S3-C (Table S2), S4-E,
-S6-A, S6-C and S7-C. Throughout, `a = log q`, `w = ⌈log q⌉ = a + δ` with
+Main paper, Sections IV–V and Corollary 11; Supplement S3-C (Table S2), S4-E,
+S7-A, S7-C and S8-C. Throughout, `a = log q`, `w = ⌈log q⌉ = a + δ` with
 `0 ≤ δ < 1`, and `ι ∈ {0, 1}` covers the strict and non-strict conventions.
 Margins are stated before subtracting the slack, as in Table S2.
 -/
@@ -115,7 +115,7 @@ allowance `(3n - 2)a` by `2a + 3nδ`. -/
 theorem copy_excess (n a δ : ℝ) : 3 * n * (a + δ) - (3 * n - 2) * a = 2 * a + 3 * n * δ := by
   ring
 
-/-! ## Concrete widths at `n = 16`, `w = 256` (main paper, Figs. 1 and 4; S4-E; S9) -/
+/-! ## Concrete widths at `n = 16`, `w = 256` (main paper, Figs. 1 and 4; S4-E; S10) -/
 
 /-- Key, joint, split and cross-refresh widths, and the advertised range. -/
 theorem widths_16_256 :
@@ -216,9 +216,9 @@ theorem attack_fraction (n w ι : ℝ) (hn : n ≠ 0) (hw : w ≠ 0) :
     (2 * w + ι) / (3 * n * w) = 2 / (3 * n) + ι / (3 * n * w) := by
   field_simp
 
-/-! ## Identity-based budgets (Supplement S6-A, S6-C, S7-C) -/
+/-! ## Identity-based budgets (Supplement S7-A, S7-C, S8-C) -/
 
-/-- Supplement S6-A: under a full-group encoding `ℓ_G ≥ log q`, every output of
+/-- Supplement S7-A: under a full-group encoding `ℓ_G ≥ log q`, every output of
 `j ≥ 1` group elements after prior target leakage `b ≥ 0` exceeds the cap
 `log q - l_m - σ_K` whenever `l_m + σ_K > 0`. -/
 theorem ibkem_cap_exceeded (lq ℓG lm σ b : ℝ) (j : ℕ) (hj : 1 ≤ j) (hlq : 0 ≤ lq)
@@ -227,7 +227,7 @@ theorem ibkem_cap_exceeded (lq ℓG lm σ b : ℝ) (j : ℕ) (hj : 1 ≤ j) (hlq
   have hj' : (1 : ℝ) ≤ j := by exact_mod_cast hj
   nlinarith
 
-/-- Supplement S6-C: for `n ≥ ⌈(2ℓ_G + ℓ_p + 1 + σ_B)/log p⌉`, the leakage parameter
+/-- Supplement S7-C: for `n ≥ ⌈(2ℓ_G + ℓ_p + 1 + σ_B)/log p⌉`, the leakage parameter
 `λ = 2ℓ_G + ℓ_p + 1` with `b₀ = 0` satisfies `b₀ + L_all + ι ≤ λ ≤ ⌊(n + 1) log p - σ_B⌋`
 under both conventions. -/
 theorem ibe_window (lp σB : ℝ) (ℓG ℓp n : ℕ) (ι : ℝ) (hlp : 0 < lp) (hι : ι ≤ 1)
@@ -242,14 +242,14 @@ theorem ibe_window (lp σB : ℝ) (ℓG ℓp n : ℕ) (ι : ℝ) (hlp : 0 < lp) 
   push_cast
   nlinarith
 
-/-- Supplement S6-C: with ordinary full-field encodings `ℓ_G, ℓ_p ≥ log p`, copying the
+/-- Supplement S7-C: with ordinary full-field encodings `ℓ_G, ℓ_p ≥ log p`, copying the
 whole key costs `3ℓ_G + nℓ_p ≥ (n + 3) log p`, above the cap `(n + 1) log p - σ_B`. -/
 theorem ibe_copy_exceeds (lp ℓG ℓp σB n : ℝ) (hlp : 0 < lp) (hG : lp ≤ ℓG) (hp : lp ≤ ℓp)
     (hn : 0 ≤ n) (hσ : 0 ≤ σB) :
     (n + 3) * lp ≤ 3 * ℓG + n * ℓp ∧ (n + 1) * lp - σB < (n + 3) * lp := by
   constructor <;> nlinarith
 
-/-- Supplement S7-C: the window `⌈log p⌉ + ι ≤ λ ≤ 2 log p - σ` contains
+/-- Supplement S8-C: the window `⌈log p⌉ + ι ≤ λ ≤ 2 log p - σ` contains
 `λ = ⌈log p⌉ + ι` for every slack `σ ≤ log p - 2`, and at this smallest `λ`
 the Claim 2 bound `2^λ/p^3` is below `4/p^2`. -/
 theorem zhouyang_window (p σ ι : ℝ) (hp : 1 < p) (hσ : σ ≤ Real.logb 2 p - 2) (hι1 : ι ≤ 1) :

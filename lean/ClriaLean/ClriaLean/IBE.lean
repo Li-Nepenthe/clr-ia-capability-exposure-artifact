@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # IBE of Zhou et al. and IBE of Zhou and Yang
 
-Main paper, Sections VIII-B and VIII-C, Proposition 16; Supplement S6-B, S6-D and S7-C.
+Main paper, Sections VIII-B and VIII-C, Proposition 18; Supplement S7-B, S7-D and S8-C.
 Groups are `K`-modules and the symmetric pairing is a `K`-bilinear map
 `e : G →ₗ[K] G →ₗ[K] G_T` with `e x y = e y x`.
 
@@ -33,7 +33,7 @@ lemma aB_eq (γ : K) (ρ t : Fin n → K) : aB γ ρ t = γ * ∑ i, t i * ρ i 
   simp only [aB, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
-/-- Supplement S6-B, public normalization: for a public `j` with `k_{pub,j} ≠ 0`,
+/-- Supplement S7-B, public normalization: for a public `j` with `k_{pub,j} ≠ 0`,
 `W = g_{3,j}^{1/k_{pub,j}} = g^{1/γ}`, `g₃^𝐭 = W^{a_B}` and
 `∏_k c_{3,k}^{t_k} = E₁^{a_B}` with `E₁ = c_{3,j}^{1/k_{pub,j}}`. The secret exponents
 justify these identities; the algorithm uses only public values. -/
@@ -63,7 +63,7 @@ theorem normalization (e : G →ₗ[K] G →ₗ[K] GT) (g g₁ : G) (γ s : K) (
     rw [Finset.mul_sum, Finset.sum_mul]
     exact Finset.sum_congr rfl fun i _ => by field_simp
 
-/-- Main paper, eq. (16) and Proposition 16: the leaked `C_all = (d₁, d₃, a_B)` and
+/-- Main paper, eq. (17) and Proposition 18: the leaked `C_all = (d₁, d₃, a_B)` and
 public values give `X = e(c₁, d₁) e(c₂, d₃) E₁^{a_B}`, then `Y = c₆ X^{-μ}` and
 `M = c₅/(X Y^η)`, written additively. -/
 theorem recovery (e : G →ₗ[K] G →ₗ[K] GT) (he : ∀ x y, e x y = e y x)
@@ -90,7 +90,7 @@ theorem recovery (e : G →ₗ[K] G →ₗ[K] GT) (he : ∀ x y, e x y = e y x)
   · rw [hX]; module
   · rw [hX]; module
 
-/-- Supplement S6-D, persistence. On a successful update with `r'` and
+/-- Supplement S7-D, persistence. On a successful update with `r'` and
 `⟨𝐤_pub, 𝐭'⟩ = 0`, the printed rules `d₁ ↦ d₁ + r' F`, `d₂ ↦ d₂ + r' F`,
 `d₃ ↦ d₃ - r' g`, `𝐭 ↦ 𝐭 + 𝐭'` keep `R = d₁ - d₂`, `a_B`, `g₃^𝐭` and
 `e(d₁, g) e(d₃, F)`, while `d₃` changes when `r' ≠ 0`. The kept value equals
@@ -131,7 +131,7 @@ theorem update_persistence (e : G →ₗ[K] G →ₗ[K] GT) (he : ∀ x y, e x y
     · exact hr h0
     · exact hg h0
 
-/-- Main paper, Section VIII-C, and Supplement S7-C (Zhou and Yang): decryption computes
+/-- Main paper, Section VIII-C, and Supplement S8-C (Zhou and Yang): decryption computes
 `ω_j = e(c₁, sk_j) c₂^{t_j}`; for `c₁ = 1_G` and `c₂ = h` this is `h^{t_j}`, so the tag
 `c₄ = h^{z}` with the leaked `z = μ t₁ + t₂` satisfies `c₄ = ω₁^μ ω₂` and is accepted. -/
 theorem zhouyang_invalid_accept (e : G →ₗ[K] G →ₗ[K] GT) (sk₁ sk₂ : G) (t₁ t₂ μ : K)
@@ -140,7 +140,7 @@ theorem zhouyang_invalid_accept (e : G →ₗ[K] G →ₗ[K] GT) (sk₁ sk₂ : 
   simp only [map_zero, LinearMap.zero_apply, zero_add]
   module
 
-/-- Supplement S7-A: the header `(c₁, c₂) = (1_G, e(g, g))` is invalid. Honest headers are
+/-- Supplement S8-A: the header `(c₁, c₂) = (1_G, e(g, g))` is invalid. Honest headers are
 `c₁ = (g₁ g^{-id})^r = r (α - id) g` and `c₂ = e(g, g)^r`; for `id ≠ α`, `g ≠ 0` and
 `e(g, g) ≠ 0`, no `r` gives `c₁ = 0` and `c₂ = e(g, g)`. -/
 theorem zhouyang_header_invalid (e : G →ₗ[K] G →ₗ[K] GT) (g : G) (α id r : K)

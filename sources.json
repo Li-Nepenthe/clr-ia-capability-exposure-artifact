@@ -16,7 +16,10 @@
         "Definition 6 (continual notion)": "physical p. 5 / printed p. 5625",
         "construction, n >= 16 and (f_a, f_b)": "physical p. 7 / printed p. 5627",
         "allowance lemma and main theorem proof": "physical p. 8 / printed p. 5628",
-        "anytime proof, halved budget": "physical p. 8 / printed p. 5628"
+        "anytime proof, halved budget": "physical p. 8 / printed p. 5628",
+        "identification and prover (timestamp check only)": "physical p. 6 / printed p. 5626 (Section V-A.4)",
+        "MEC procedure: messages, checks, keys": "physical pp. 9-10 / printed pp. 5629-5630 (Section VI-A.3)",
+        "MEC known session key security": "physical p. 10 / printed p. 5630 (Section VI-C.6)"
       }
     }
   ]

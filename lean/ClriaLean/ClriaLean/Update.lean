@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # CLR-IA: the printed key update
 
-Main paper, Section IV and Lemma 7; Supplement S2-A. A key is
+Main paper, Section III and Lemma 7; Supplement S2-A. A key is
 `A : K^{1×n}` (nonzero) and `B : K^{n×2}`; the update has two stages:
 
 * first stage: `E ≠ 0`, `E F = 0`, nonsingular `T` with `A T = E`, and `B' = B + T F`;
@@ -57,7 +57,7 @@ theorem IsUpdate.product {A A' : Matrix (Fin 1) (Fin n) K} {B B' : Matrix (Fin n
   subst hA' hB'
   exact stages_preserve_product A E Et B F Ft T Tt hT hEF hTt hEFt
 
-/-- The product is unchanged along any sequence of executions (main paper, Section VII:
+/-- The product is unchanged along any sequence of executions (main paper, Section VI:
 the printed update keeps `AB` on every execution that returns a key). -/
 theorem update_chain_product (As : ℕ → Matrix (Fin 1) (Fin n) K)
     (Bs : ℕ → Matrix (Fin n) (Fin 2) K)
