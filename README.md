@@ -4,8 +4,9 @@ This artifact accompanies the paper on capability exposure in CLR-IA. It has thr
 parts: `demo.py` checks one concrete instance of the attacks and the key update;
 `lean/ClriaLean/` proves the paper's algebra, counts and numerical bounds for all
 parameters; `mec/` reproduces the session attacks on the MEC procedure. Version
-1.3.0 adds `mec/` and the Lean hypothesis audit, and updates the paper locators to
-the numbering of the paper version that cites it.
+1.3.0 is the first release to include `lean/ClriaLean/`, with its hypothesis
+audit, and `mec/`; `demo.py` is unchanged from 1.2.0. Paper locators follow the
+numbering of the paper version that cites 1.3.0.
 
 ## Python checks
 
