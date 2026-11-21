@@ -14,14 +14,14 @@ where counts are taken) are the modeling conventions of `README.md` and are not 
 | 1 | `Clria.row_apply` | `Basic` | — | none |
 | 2 | `Clria.capability_accepts` | `Basic` | — | none. Proves the verification identity of eq. (6) only; that X is a 1-capability for both published games, and the legality of the query, are argued on paper (Proposition 5, Table I). |
 | 3 | `Clria.honest_accepts` | `Basic` | — | none |
-| 4 | `Clria.theta_of_two_reps` | `Basic` | `(hg₁ : g₁ ≠ 0)`<br>`(hne : X ≠ X')`<br>`(h : gpow g₁ g₂ X = gpow g₁ g₂ X')` | S: g1 is not the identity (generator). P: X ≠ X' with g^X = g^X' (the premise of eq. (2)). |
+| 4 | `Clria.theta_of_two_reps` | `Basic` | `(hg₁ : g₁ ≠ 0)`<br>`(hne : X ≠ X')`<br>`(h : gpow g₁ g₂ X = gpow g₁ g₂ X')` | S: g1 is not the identity (generator). P: X ≠ X' with g^X = g^X' (the premise of eq. (1)). |
 | 5 | `Clria.rewind_extracts_X` | `Basic` | `(hc : c ≠ c')` | P: distinct challenges. |
 | 6 | `Clria.trapdoor_witness` | `Basic` | — | none |
 | 7 | `Clria.bridge` | `Update` | `(hT : A * T = E)`<br>`(hEF : E * F = 0)` | F: the printed first-stage constraints AT = E, EF = 0. |
 | 8 | `Clria.stages_preserve_product` | `Update` | `(hT : A * T = E)`<br>`(hEF : E * F = 0)`<br>`(hTt : Tt * (B + T * F) = Ft)`<br>`(hEFt : Et * Ft = 0)` | F: the printed constraints of both stages. |
 | 9 | `Clria.IsUpdate.bridge` | `Update` | `(h : IsUpdate A B A' B')` | F: one non-aborting execution of the printed update (definition IsUpdate). |
 | 10 | `Clria.IsUpdate.product` | `Update` | `(h : IsUpdate A B A' B')` | F: one non-aborting execution of the printed update. |
-| 11 | `Clria.update_chain_product` | `Update` | `(h : ∀ i, IsUpdate (As i) (Bs i) (As (i + 1)) (Bs (i + 1)))` | F: every refresh in the sequence returns a key (Section VI: "whenever the refreshes return keys"). |
+| 11 | `Clria.update_chain_product` | `Update` | `(h : ∀ i, IsUpdate (As i) (Bs i) (As (i + 1)) (Bs (i + 1)))` | F: every refresh in the sequence returns a key (Section VI-D: "whenever the refreshes return keys"). |
 | 12 | `Clria.update_chain_bridge` | `Update` | `(h : ∀ i, IsUpdate (As i) (Bs i) (As (i + 1)) (Bs (i + 1)))` | F: every refresh in the sequence returns a key. |
 | 13 | `Clria.bridge_one_direction` | `Update` | `(hn : 2 ≤ n)` | S: n ≥ 2 (the source fixes n ≥ 16). |
 | 14 | `Clria.Params.L_split` | `Params` | — | none |
@@ -51,7 +51,7 @@ where counts are taken) are the modeling conventions of `README.md` and are not 
 | 38 | `Clria.IBKEM.mu_neg_one` | `IBKEM` | — | none |
 | 39 | `Clria.IBKEM.update_keeps_R` | `IBKEM` | — | none |
 | 40 | `Clria.IBKEM.hybrid_identity` | `IBKEM` | `(he : ∀ x y, e x y = e y x)` | F: the pairing is symmetric (the source uses symmetric pairing groups). |
-| 41 | `Clria.IBE.normalization` | `IBE` | `(hk : γ * ρ j ≠ 0)` | F: a public index j with k_pub,j ≠ 0, as Section VIII-B selects. |
+| 41 | `Clria.IBE.normalization` | `IBE` | `(hk : γ * ρ j ≠ 0)` | F: a public index j with k_pub,j ≠ 0, as Section VII-B2 selects. |
 | 42 | `Clria.IBE.recovery` | `IBE` | `(he : ∀ x y, e x y = e y x)`<br>`(hk : γ * ρ j ≠ 0)` | F: symmetric pairing; public j with k_pub,j ≠ 0. The vector reading is built into the model (pairings with vector components taken coordinatewise); it is an interpretation stated in the paper, not proved. |
 | 43 | `Clria.IBE.update_persistence` | `IBE` | `(he : ∀ x y, e x y = e y x)`<br>`(hk : γ * ρ j ≠ 0)`<br>`(ht' : aB γ ρ t' = 0)` | F: symmetric pairing; k_pub,j ≠ 0; the printed update constraint ⟨k_pub, t'⟩ = 0. |
 | 44 | `Clria.IBE.zhouyang_invalid_accept` | `IBE` | `(h : GT)` | none |
@@ -71,7 +71,7 @@ where counts are taken) are the modeling conventions of `README.md` and are not 
 | 58 | `Clria.Fiber.exists_weight_ge` | `Fiber` | `(hT : T.card ≤ N)`<br>`(hN : 0 < N)`<br>`(hsum : ∑ z ∈ T, p z = 1)` | P: ≤ N values carry total weight 1 (the core of Lemma 2(a)). |
 | 59 | `Clria.Projection.lemma2a` | `Projection` | `(hP : ∀ s v, 0 ≤ P s v)`<br>`(hsum : ∑ s, ∑ v, P s v = 1)`<br>`(hN : 0 < N)`<br>`(hcard : ∀ v, (univ.filter fun z => 0 < mass P φ z v).card ≤ N)` | S: nonnegative weights of total mass 1. P: ≤ N positive values per view (Lemma 2(a)). |
 | 60 | `Clria.Projection.lemma2b` | `Projection` | `(hP : ∀ s v, 0 ≤ P s v)`<br>`(hsum : ∑ s, ∑ v, P s v = 1)`<br>`(hF : 0 < F)`<br>`(hcard : ∀ v z, (univ.filter fun s => φ s = z ∧ 0 < P s v).card ≤ F)` | S: nonnegative weights of total mass 1. P: ≤ F positive states per view and value (Lemma 2(b)). |
-| 61 | `Clria.RefreshLimit.witness_of_responses` | `RefreshLimit` | `(hcorr : ∀ st ρ c, rep g (Rsp st ρ c) = Com st ρ + c • pk)` | E: perfect correctness of the m-generator Okamoto verifier for every state, coin and challenge. S5-A assumes this; the theorem does not prove it for a given scheme (for CLR-IA it is eq. (3), honest_accepts). |
+| 61 | `Clria.RefreshLimit.witness_of_responses` | `RefreshLimit` | `(hcorr : ∀ st ρ c, rep g (Rsp st ρ c) = Com st ρ + c • pk)` | E: perfect correctness of the m-generator Okamoto verifier for every state, coin and challenge. S5-A assumes this; the theorem does not prove it for a given scheme (for CLR-IA it is eq. (2), honest_accepts). |
 | 62 | `Clria.RefreshLimit.nontrivial_relation` | `RefreshLimit` | `(hne : w ≠ w')`<br>`(hw : rep g w = pk)`<br>`(hw' : rep g w' = pk)` | P: two different witnesses of one public key. |
 | 63 | `Clria.RefreshLimit.clria_witness_is_product` | `RefreshLimit` | — | none |
 | 64 | `Clria.RefreshLimit.splice_chunks` | `RefreshLimit` | `(hb : 1 ≤ b)` | S: b ≥ 1 (Lemma 4: b = λ − ι ≥ 1). |

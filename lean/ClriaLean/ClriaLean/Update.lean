@@ -35,7 +35,7 @@ theorem bridge (A E : Matrix (Fin 1) (Fin n) K) (B F : Matrix (Fin n) (Fin 2) K)
     A * (B + T * F) = A * B := by
   rw [Matrix.mul_add, ← Matrix.mul_assoc, hT, hEF, add_zero]
 
-/-- Main paper, eq. (4): both stages together keep the product, `A' B' = A B`. -/
+/-- Main paper, eq. (3): both stages together keep the product, `A' B' = A B`. -/
 theorem stages_preserve_product (A E Et : Matrix (Fin 1) (Fin n) K)
     (B F Ft : Matrix (Fin n) (Fin 2) K) (T Tt : Matrix (Fin n) (Fin n) K)
     (hT : A * T = E) (hEF : E * F = 0) (hTt : Tt * (B + T * F) = Ft)
@@ -50,14 +50,14 @@ theorem IsUpdate.bridge {A A' : Matrix (Fin 1) (Fin n) K} {B B' : Matrix (Fin n)
   rw [hB']
   exact Clria.bridge A E B F T hT hEF
 
-/-- Eq. (4) for an execution: `A' B' = A B`. -/
+/-- Eq. (3) for an execution: `A' B' = A B`. -/
 theorem IsUpdate.product {A A' : Matrix (Fin 1) (Fin n) K} {B B' : Matrix (Fin n) (Fin 2) K}
     (h : IsUpdate A B A' B') : A' * B' = A * B := by
   obtain ⟨E, Et, F, Ft, T, Tt, _, hEF, _, hT, hB', _, hEFt, _, hTt, hA', -⟩ := h
   subst hA' hB'
   exact stages_preserve_product A E Et B F Ft T Tt hT hEF hTt hEFt
 
-/-- The product is unchanged along any sequence of executions (main paper, Section VI:
+/-- The product is unchanged along any sequence of executions (main paper, Section VI-D:
 the printed update keeps `AB` on every execution that returns a key). -/
 theorem update_chain_product (As : ℕ → Matrix (Fin 1) (Fin n) K)
     (Bs : ℕ → Matrix (Fin n) (Fin 2) K)

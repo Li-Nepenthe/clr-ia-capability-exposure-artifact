@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # IBE of Zhou et al. and IBE of Zhou and Yang
 
-Main paper, Sections VIII-B and VIII-C, Proposition 18; Supplement S7-B, S7-D and S8-C.
+Main paper, Sections VII-B2 and VII-B3, Proposition 18; Supplement S7-B, S7-D and S8-C.
 Groups are `K`-modules and the symmetric pairing is a `K`-bilinear map
 `e : G →ₗ[K] G →ₗ[K] G_T` with `e x y = e y x`.
 
@@ -131,7 +131,7 @@ theorem update_persistence (e : G →ₗ[K] G →ₗ[K] GT) (he : ∀ x y, e x y
     · exact hr h0
     · exact hg h0
 
-/-- Main paper, Section VIII-C, and Supplement S8-C (Zhou and Yang): decryption computes
+/-- Main paper, Section VII-B3, and Supplement S8-C (Zhou and Yang): decryption computes
 `ω_j = e(c₁, sk_j) c₂^{t_j}`; for `c₁ = 1_G` and `c₂ = h` this is `h^{t_j}`, so the tag
 `c₄ = h^{z}` with the leaked `z = μ t₁ + t₂` satisfies `c₄ = ω₁^μ ω₂` and is accepted. -/
 theorem zhouyang_invalid_accept (e : G →ₗ[K] G →ₗ[K] GT) (sk₁ sk₂ : G) (t₁ t₂ μ : K)

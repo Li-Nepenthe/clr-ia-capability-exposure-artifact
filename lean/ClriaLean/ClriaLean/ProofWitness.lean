@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # Witnesses against two proof steps
 
-Main paper, Section VIII-C; Supplement S8-A (Zhou and Yang, Claim 2) and S8-B
+Main paper, Section VII-B3; Supplement S8-A (Zhou and Yang, Claim 2) and S8-B
 (Zhou et al., the extraction step). `K` is a finite field with `q = |K|`; uniform choices
 are stated as counts, and statistical distance is `½ Σ |P - Q|` on finite types.
 -/
@@ -16,7 +16,7 @@ section Claim2
 
 variable {K : Type*} [Field K] [Fintype K]
 
-/-- Main paper, Section VIII-C, and Supplement S8-A: for uniform key coordinates
+/-- Main paper, Section VII-B3, and Supplement S8-A: for uniform key coordinates
 `(t₁, t₂)`, an invalid header is accepted exactly when `μ t₁ + t₂` takes one value, an event
 on a fiber of `q` keys, i.e. probability `q/q² = 1/q`. -/
 theorem claim2_fiber (μ z : K) :

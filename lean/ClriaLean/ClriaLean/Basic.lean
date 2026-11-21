@@ -15,7 +15,7 @@ namespace Clria
 
 variable {K : Type*} [Field K] {G : Type*} [AddCommGroup G] [Module K G]
 
-/-- `g^X = g₁^{x₁} g₂^{x₂}` (main paper, Section III-A), written additively. -/
+/-- `g^X = g₁^{x₁} g₂^{x₂}` (main paper, Section III-B), written additively. -/
 def gpow (g₁ g₂ : G) (X : Fin 2 → K) : G := X 0 • g₁ + X 1 • g₂
 
 /-- The pair `X = AB` as a vector, for `A ∈ K^{1×n}` and `B ∈ K^{n×2}`. -/
@@ -35,14 +35,14 @@ theorem capability_accepts (g₁ g₂ : G) (X r : Fin 2 → K) (c : K) :
   simp only [gpow, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_smul, mul_smul, smul_add]
   abel
 
-/-- Main paper, eq. (3): the honest prover with key `(A, B)` answers `v = r + c·AB`,
+/-- Main paper, eq. (2): the honest prover with key `(A, B)` answers `v = r + c·AB`,
 which passes verification against `pk = g^{AB}`. -/
 theorem honest_accepts (g₁ g₂ : G) {n : ℕ} (A : Matrix (Fin 1) (Fin n) K)
     (B : Matrix (Fin n) (Fin 2) K) (r : Fin 2 → K) (c : K) :
     gpow g₁ g₂ (r + c • row A B) = gpow g₁ g₂ r + c • gpow g₁ g₂ (row A B) :=
   capability_accepts g₁ g₂ (row A B) r c
 
-/-- Main paper, eq. (2): two different representations of one public key give
+/-- Main paper, eq. (1): two different representations of one public key give
 `θ = log_{g₁} g₂ = -(x₁' - x₁)/(x₂' - x₂)`, and `x₂ ≠ x₂'`. -/
 theorem theta_of_two_reps (g₁ g₂ : G) (hg₁ : g₁ ≠ 0) {X X' : Fin 2 → K} (hne : X ≠ X')
     (h : gpow g₁ g₂ X = gpow g₁ g₂ X') :
@@ -72,7 +72,7 @@ theorem theta_of_two_reps (g₁ g₂ : G) (hg₁ : g₁ ≠ 0) {X X' : Fin 2 →
       congr 1
       rw [show X' 1 - X 1 = -(X 1 - X' 1) by ring, div_neg, neg_div, neg_neg, div_eq_inv_mul]
 
-/-- Main paper, eq. (12) and Section V-A: rewinding with a fixed nonce `r` on two
+/-- Main paper, eq. (12) and Section VI-A: rewinding with a fixed nonce `r` on two
 distinct challenges extracts `(v - v')/(c - c') = X`, so the extracted key always
 equals the attacker's `X` (the source's event `E₂`). -/
 theorem rewind_extracts_X (X r : Fin 2 → K) {c c' : K} (hc : c ≠ c') :

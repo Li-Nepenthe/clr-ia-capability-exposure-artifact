@@ -2,7 +2,7 @@
 
 This directory reproduces, on concrete parameters, the two session attacks on the
 mobile-edge-computing (MEC) procedure of CLR-IA that the accompanying paper derives
-in main-paper Section VII (Propositions 15 and 16) and Supplement S6. The runs are
+in main-paper Section VII-A (Propositions 15 and 16) and Supplement S6. The runs are
 execution witnesses for that algebra. They are not proofs, and they are not covered
 by the Lean development in `../lean/`.
 

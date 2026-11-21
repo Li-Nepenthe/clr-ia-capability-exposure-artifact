@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # IB-KEM of Qiao et al.: the identity-independent capability
 
-Main paper, Section VIII-A and Proposition 17; Supplement S7-A. The pairing groups
+Main paper, Section VII-B1 and Proposition 17; Supplement S7-A. The pairing groups
 are written additively as `K`-modules `G` and `G_T`, and the pairing is a `K`-bilinear
 map `e : G →ₗ[K] G →ₗ[K] G_T`; `E = e(g, g)`. A key of identity `i` is
 `(d₁, d₂, d₃) = (α g + s hᵢ, β g + s hᵢ, -s g)`. An honest encapsulation has
@@ -43,14 +43,14 @@ theorem recovers_key (e : G →ₗ[K] G →ₗ[K] GT) (g : G) (α β r μ : K) (
   rw [key, inv_smul_smul₀ hμ']
   exact ⟨rfl, rfl⟩
 
-/-- Main paper, Section VIII-A: for `μ = -1`, `V + D = 0`, so the recovery formula
+/-- Main paper, Section VII-B1: for `μ = -1`, `V + D = 0`, so the recovery formula
 gives nothing. -/
 theorem mu_neg_one (e : G →ₗ[K] G →ₗ[K] GT) (g : G) (α β r : K) :
     ((-1 : K) • ((α * r) • e g g) + (β * r) • e g g) + e ((α - β) • g) (r • g) = 0 := by
   rw [(capability e g g α β 0 r (-1)).2.2]
   simp
 
-/-- Main paper, Section VIII-A: the update multiplies `d₁` and `d₂` by the same
+/-- Main paper, Section VII-B1: the update multiplies `d₁` and `d₂` by the same
 `hᵢ^{s'}`, so `R` is unchanged. -/
 theorem update_keeps_R (d₁ d₂ h : G) (s' : K) :
     (d₁ + s' • h) - (d₂ + s' • h) = d₁ - d₂ := by

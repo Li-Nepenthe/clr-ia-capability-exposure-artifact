@@ -3,29 +3,29 @@ import Mathlib
 /-!
 # Budget arithmetic and concrete values
 
-Main paper, Sections IV–V and Corollary 11; Supplement S3-C (Table S2), S4-E,
+Main paper, Sections V–VI and Corollary 11; Supplement S3-C (Table S3), S4-E,
 S7-A, S7-C and S8-C. Throughout, `a = log q`, `w = ⌈log q⌉ = a + δ` with
 `0 ≤ δ < 1`, and `ι ∈ {0, 1}` covers the strict and non-strict conventions.
-Margins are stated before subtracting the slack, as in Table S2.
+Margins are stated before subtracting the slack, as in Table S3.
 -/
 
 namespace Clria.Params
 
-/-! ## Costs and margins (main paper, eqs. (9), (11); Table S2) -/
+/-! ## Costs and margins (main paper, eqs. (9), (11); Table S3) -/
 
 /-- Main paper, eq. (9): `L_split = (nw + 1) + (2w + 1) = (n + 2)w + 2`. -/
 theorem L_split (n w : ℕ) : (n * w + 1) + (2 * w + 1) = (n + 2) * w + 2 := by ring
 
-/-- Full margin `(3n - 2)a - L - ι` of Table S2. -/
+/-- Full margin `(3n - 2)a - L - ι` of Table S3. -/
 noncomputable def full (n a L ι : ℝ) : ℝ := (3 * n - 2) * a - L - ι
 
-/-- Half margin `(3n - 2)a/2 - L - ι` of Table S2. -/
+/-- Half margin `(3n - 2)a/2 - L - ι` of Table S3. -/
 noncomputable def half (n a L ι : ℝ) : ℝ := (3 * n - 2) * a / 2 - L - ι
 
 section Table
 variable (n a δ ι : ℝ)
 
-/-- Table S2, joint query, cost `2w`. -/
+/-- Table S3, joint query, cost `2w`. -/
 theorem joint_margins :
     full n a (2 * (a + δ)) ι = (3 * n - 4) * a - 2 * δ - ι ∧
     half n a (2 * (a + δ)) ι = (3 * n - 6) * a / 2 - 2 * δ - ι := by
@@ -33,7 +33,7 @@ theorem joint_margins :
   · unfold full; ring
   · unfold half; ring
 
-/-- Table S2, split queries on one key, cost `(n + 2)w + 2`. -/
+/-- Table S3, split queries on one key, cost `(n + 2)w + 2`. -/
 theorem split_margins :
     full n a ((n + 2) * (a + δ) + 2) ι = (2 * n - 4) * a - (n + 2) * δ - 2 - ι ∧
     half n a ((n + 2) * (a + δ) + 2) ι = (n / 2 - 3) * a - (n + 2) * δ - 2 - ι := by
@@ -41,7 +41,7 @@ theorem split_margins :
   · unfold full; ring
   · unfold half; ring
 
-/-- Table S2, cross-refresh round `i`, cost `nw + 1`. -/
+/-- Table S3, cross-refresh round `i`, cost `nw + 1`. -/
 theorem cross_i_margins :
     full n a (n * (a + δ) + 1) ι = (2 * n - 2) * a - n * δ - 1 - ι ∧
     half n a (n * (a + δ) + 1) ι = (n / 2 - 1) * a - n * δ - 1 - ι := by
@@ -49,7 +49,7 @@ theorem cross_i_margins :
   · unfold full; ring
   · unfold half; ring
 
-/-- Table S2, cross-refresh round `i + 1`, cost `2w + 1`. -/
+/-- Table S3, cross-refresh round `i + 1`, cost `2w + 1`. -/
 theorem cross_next_margins :
     full n a (2 * (a + δ) + 1) ι = (3 * n - 4) * a - 2 * δ - 1 - ι ∧
     half n a (2 * (a + δ) + 1) ι = (3 * n - 6) * a / 2 - 2 * δ - 1 - ι := by
@@ -62,7 +62,7 @@ end Table
 section Sixteen
 variable {a δ ι : ℝ}
 
-/-- Table S2, the four rows at `n = 16` (using `δ < 1`). -/
+/-- Table S3, the four rows at `n = 16` (using `δ < 1`). -/
 theorem margins_at_16 (hδ1 : δ < 1) :
     full 16 a (2 * (a + δ)) ι > 44 * a - 2 - ι ∧
     half 16 a (2 * (a + δ)) ι > 21 * a - 2 - ι ∧
@@ -97,7 +97,7 @@ theorem margin_growth (n a δ ι : ℝ) (ha : 0 ≤ a) (hδ : 0 ≤ δ) :
   unfold full half
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> nlinarith
 
-/-- All eight margins of Table S2 are positive for every `n ≥ 16` once `a ≥ 5`
+/-- All eight margins of Table S3 are positive for every `n ≥ 16` once `a ≥ 5`
 (the paper's `a > 255`), so a positive slack fits below each of them. -/
 theorem margins_pos (n a δ ι : ℝ) (hn : 16 ≤ n) (ha : 5 ≤ a) (hδ1 : δ < 1) (hι1 : ι ≤ 1) :
     0 < full n a (2 * (a + δ)) ι ∧ 0 < half n a (2 * (a + δ)) ι ∧
@@ -115,7 +115,7 @@ allowance `(3n - 2)a` by `2a + 3nδ`. -/
 theorem copy_excess (n a δ : ℝ) : 3 * n * (a + δ) - (3 * n - 2) * a = 2 * a + 3 * n * δ := by
   ring
 
-/-! ## Concrete widths at `n = 16`, `w = 256` (main paper, Figs. 1 and 4; S4-E; S10) -/
+/-! ## Concrete widths at `n = 16`, `w = 256` (main paper, Figs. 1 and 6; S4-E; S10) -/
 
 /-- Key, joint, split and cross-refresh widths, and the advertised range. -/
 theorem widths_16_256 :
