@@ -1,0 +1,187 @@
+{
+  "group": "NIST P-256 (secp256r1)",
+  "field_bits": 256,
+  "trials": 1000,
+  "timing_reps": 200,
+  "refresh_trials": 100,
+  "seed": 20261119,
+  "success_lower_bound_95": 0.9963179161031344,
+  "dims": {
+    "16": {
+      "stored_key_bits": 12288,
+      "leaked_bits": {
+        "joint": 512,
+        "split": 4608,
+        "cross_refresh": 4608
+      },
+      "leaked_fraction_joint": 0.041666666666666664,
+      "advertised_fraction": 0.9583333333333334,
+      "success": {
+        "joint": 1000,
+        "split": 1000,
+        "cross_refresh": 1000
+      },
+      "control_random_pair_accepted": 0,
+      "update_failures": 0,
+      "timing": {
+        "leakage_query": {
+          "median_ms": 0.03080000033151009,
+          "p5_ms": 0.02860000040527666,
+          "p95_ms": 0.05091500011076277,
+          "mean_ms": 0.03387350003777101,
+          "runs": 200
+        },
+        "impersonation_session": {
+          "median_ms": 4.410550000102376,
+          "p5_ms": 4.23054500042781,
+          "p95_ms": 5.561295000188693,
+          "mean_ms": 4.547600500009139,
+          "runs": 200
+        },
+        "honest_session": {
+          "median_ms": 4.414449999785575,
+          "p5_ms": 4.236715000706681,
+          "p95_ms": 5.5611399998724655,
+          "mean_ms": 4.587975499989625,
+          "runs": 200
+        },
+        "key_update": {
+          "median_ms": 27.409249999891472,
+          "p5_ms": 26.631674999634924,
+          "p95_ms": 28.969230000529933,
+          "mean_ms": 27.589259000096718,
+          "runs": 100
+        }
+      },
+      "ratio_impersonation_to_honest": 0.9991165378057542,
+      "elapsed_s": 54.00429949999943
+    },
+    "32": {
+      "stored_key_bits": 24576,
+      "leaked_bits": {
+        "joint": 512,
+        "split": 8704,
+        "cross_refresh": 8704
+      },
+      "leaked_fraction_joint": 0.020833333333333332,
+      "advertised_fraction": 0.9791666666666666,
+      "success": {
+        "joint": 1000,
+        "split": 1000,
+        "cross_refresh": 1000
+      },
+      "control_random_pair_accepted": 0,
+      "update_failures": 0,
+      "timing": {
+        "leakage_query": {
+          "median_ms": 0.04959999932907522,
+          "p5_ms": 0.0470950003091275,
+          "p95_ms": 0.07611000023644006,
+          "mean_ms": 0.054112499988150375,
+          "runs": 200
+        },
+        "impersonation_session": {
+          "median_ms": 4.345750000084081,
+          "p5_ms": 4.240879999770186,
+          "p95_ms": 5.117844999995214,
+          "mean_ms": 4.484336500022437,
+          "runs": 200
+        },
+        "honest_session": {
+          "median_ms": 4.365349999716273,
+          "p5_ms": 4.238944999724481,
+          "p95_ms": 4.97041500043451,
+          "mean_ms": 4.4863489999988815,
+          "runs": 200
+        },
+        "key_update": {
+          "median_ms": 118.08984999970562,
+          "p5_ms": 115.54199500010327,
+          "p95_ms": 122.98464500049704,
+          "mean_ms": 118.66139100005057,
+          "runs": 100
+        }
+      },
+      "ratio_impersonation_to_honest": 0.9955100966397963,
+      "elapsed_s": 156.34868129999995
+    },
+    "64": {
+      "stored_key_bits": 49152,
+      "leaked_bits": {
+        "joint": 512,
+        "split": 16896,
+        "cross_refresh": 16896
+      },
+      "leaked_fraction_joint": 0.010416666666666666,
+      "advertised_fraction": 0.9895833333333334,
+      "success": {
+        "joint": 1000,
+        "split": 1000,
+        "cross_refresh": 1000
+      },
+      "control_random_pair_accepted": 0,
+      "update_failures": 0,
+      "timing": {
+        "leakage_query": {
+          "median_ms": 0.08239999988290947,
+          "p5_ms": 0.07568499977423926,
+          "p95_ms": 0.09624000049370803,
+          "mean_ms": 0.08362850005141809,
+          "runs": 200
+        },
+        "impersonation_session": {
+          "median_ms": 4.233349999594793,
+          "p5_ms": 4.123094999522436,
+          "p95_ms": 4.5569999986582825,
+          "mean_ms": 4.268923499930679,
+          "runs": 200
+        },
+        "honest_session": {
+          "median_ms": 4.236650000166264,
+          "p5_ms": 4.128485001092486,
+          "p95_ms": 4.48319000097399,
+          "mean_ms": 4.265590500090184,
+          "runs": 200
+        },
+        "key_update": {
+          "median_ms": 615.795400000934,
+          "p5_ms": 597.9974500008211,
+          "p95_ms": 636.9562650004809,
+          "mean_ms": 618.4938930001226,
+          "runs": 100
+        }
+      },
+      "ratio_impersonation_to_honest": 0.9992210825601969,
+      "elapsed_s": 684.1986964999987
+    }
+  },
+  "mec": {
+    "dim": 16,
+    "role": "user-side session",
+    "impersonation_success": 1000,
+    "recovery_success": 1000,
+    "recovery_refresh_failures": 0,
+    "timing": {
+      "impersonation": {
+        "median_ms": 11.161299999912444,
+        "p5_ms": 10.735059999024088,
+        "p95_ms": 12.405904999923221,
+        "mean_ms": 11.350010000041948,
+        "runs": 200
+      },
+      "recovery": {
+        "median_ms": 33.76935000051162,
+        "p5_ms": 32.57247000010466,
+        "p95_ms": 36.46967000076984,
+        "mean_ms": 34.073863500007064,
+        "runs": 200
+      }
+    }
+  },
+  "environment": {
+    "python": "3.13.15",
+    "implementation": "CPython",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "processor": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD"
+  }
+}

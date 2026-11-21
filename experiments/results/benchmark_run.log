@@ -1,0 +1,47 @@
+  n=16: 100/1000 trials
+  n=16: 200/1000 trials
+  n=16: 300/1000 trials
+  n=16: 400/1000 trials
+  n=16: 500/1000 trials
+  n=16: 600/1000 trials
+  n=16: 700/1000 trials
+  n=16: 800/1000 trials
+  n=16: 900/1000 trials
+  n=16: 1000/1000 trials
+n=16 done in 54 s
+  n=32: 100/1000 trials
+  n=32: 200/1000 trials
+  n=32: 300/1000 trials
+  n=32: 400/1000 trials
+  n=32: 500/1000 trials
+  n=32: 600/1000 trials
+  n=32: 700/1000 trials
+  n=32: 800/1000 trials
+  n=32: 900/1000 trials
+  n=32: 1000/1000 trials
+n=32 done in 156 s
+  n=64: 100/1000 trials
+  n=64: 200/1000 trials
+  n=64: 300/1000 trials
+  n=64: 400/1000 trials
+  n=64: 500/1000 trials
+  n=64: 600/1000 trials
+  n=64: 700/1000 trials
+  n=64: 800/1000 trials
+  n=64: 900/1000 trials
+  n=64: 1000/1000 trials
+n=64 done in 684 s
+  MEC impersonation done
+  MEC recovery done
+n = 16: stored 12288 bits; joint leak 512 bits = 4.17% vs advertised 95.8%
+        success 1000/1000 (joint), 1000/1000 (split), 1000/1000 (cross-refresh); random pair accepted 0/1000; update failures 0
+        median ms: leakage query 0.031, impersonation 4.411, honest 4.414, key update 27.409; ratio 0.999
+n = 32: stored 24576 bits; joint leak 512 bits = 2.08% vs advertised 97.9%
+        success 1000/1000 (joint), 1000/1000 (split), 1000/1000 (cross-refresh); random pair accepted 0/1000; update failures 0
+        median ms: leakage query 0.050, impersonation 4.346, honest 4.365, key update 118.090; ratio 0.996
+n = 64: stored 49152 bits; joint leak 512 bits = 1.04% vs advertised 99.0%
+        success 1000/1000 (joint), 1000/1000 (split), 1000/1000 (cross-refresh); random pair accepted 0/1000; update failures 0
+        median ms: leakage query 0.082, impersonation 4.233, honest 4.237, key update 615.795; ratio 0.999
+MEC (n=16): impersonation 1000/1000, recovery 1000/1000; median 11.161 ms, 33.769 ms
+all-success 95% lower bound: 0.9963
+exit 0

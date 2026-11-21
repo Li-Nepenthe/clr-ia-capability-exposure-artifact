@@ -1,12 +1,13 @@
 # Concrete instantiation of the capability-exposure analysis
 
-This artifact accompanies the paper on capability exposure in CLR-IA. It has three
+This artifact accompanies the paper on capability exposure in CLR-IA. It has four
 parts: `demo.py` checks one concrete instance of the attacks and the key update;
 `lean/ClriaLean/` proves the paper's algebra, counts and numerical bounds for all
-parameters; `mec/` reproduces the session attacks on the MEC procedure. Version
-1.3.0 is the first release to include `lean/ClriaLean/`, with its hypothesis
-audit, and `mec/`; `demo.py` is unchanged from 1.2.0. Paper locators follow the
-numbering of the paper version that cites 1.3.0.
+parameters; `mec/` reproduces the session attacks on the MEC procedure; and
+`experiments/` measures the success rate and cost of the attacks over the
+standard NIST P-256 group. Version 1.4.0 is the first release to include
+`experiments/`; `demo.py`, `lean/` and `mec/` are unchanged from 1.3.0. Paper
+locators follow the numbering of the paper version that cites 1.4.0.
 
 ## Python checks
 
@@ -95,7 +96,7 @@ should end with "Build completed successfully" and no warnings.
 ## MEC session attacks
 
 `mec/` reproduces the two session attacks on CLR-IA's MEC procedure that the paper
-derives (main-paper Section VII, Propositions 15 and 16; Supplement S6): with the
+derives (main-paper Section VII-A, Propositions 15 and 16; Supplement S6): with the
 printed checks corrected, the actual key product impersonates either party in a new
 session, and one party's later key recovers recorded session keys of the same key
 lifecycle. To run (standard library only, a few seconds at the defaults):
@@ -108,11 +109,41 @@ The launcher prints `RESULT: PASS` when every recorded check passes and writes a
 record under `mec/records/`. `mec/README.md` describes the checks, the data flow
 between the honest world and the separate adversary process, and the record format.
 
+## Experimental evaluation
+
+`experiments/benchmark.py` measures the attack over the standardized NIST P-256
+(secp256r1) elliptic-curve group. (The analyzed CLR-IA paper also measures its
+protocol over an elliptic-curve group, there the curve `y^2 = x^3 - 2x`.) It
+reuses the correctness logic of `demo.py` and, for dimensions `n = 16, 32, 64`,
+records over many trials the success rate of impersonation from the leaked key
+product for the three legal acquisition paths, a negative control in which a
+random pair is submitted instead, the leaked bits against the advertised
+allowance, and the wall-clock cost of the leakage query, an impersonation
+session, an honest session and one key update (median and 5th/95th percentiles
+over interleaved repetitions); it then runs the two MEC session attacks. To run
+(standard library only; `experiments/p256.py` provides the curve):
+
+```
+python3 experiments/check_p256.py
+python3 experiments/benchmark.py --out experiments/results/benchmark_p256.json
+```
+
+`check_p256.py` recomputes 100 OpenSSL-generated P-256 public keys with
+`p256.py` and needs the `openssl` command; it should print `RESULT: PASS`.
+Flags `--trials`, `--timing-reps`, `--refresh-trials`, `--dims` and `--seed`
+override the benchmark defaults (`1000`, `200`, `100`, `16 32 64`, fixed); the
+full run takes about 15 minutes. The times are pure-Python P-256 figures on the
+recorded machine. An impersonation session and an honest session perform the
+same group operations, and in this implementation their medians differ by under
+2% at every `n`; the leakage query that produces `X` is timed separately. The
+paper reports the numbers in `experiments/results/`.
+
 ## Scope
 
 The Python script checks one concrete instance (`n = 16`, `w = 256`) of the
 finite, mechanically verifiable layer; it computes no discrete logarithm,
-performs no rewinding and measures no timing. The Lean development proves the
+performs no rewinding. `demo.py` measures no timing; `experiments/benchmark.py`
+measures wall-clock cost but no physical side channel. The Lean development proves the
 algebra, counts and numerical bounds for all parameters. The reductions to the
 discrete-logarithm, DBDH and target-collision assumptions, the rewinding
 analysis and the security games are argued in the accompanying paper, not

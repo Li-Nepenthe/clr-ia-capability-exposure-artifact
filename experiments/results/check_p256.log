@@ -1,0 +1,6 @@
+OpenSSL 3.5.7 9 Jun 2026 (Library: OpenSSL 3.5.7 9 Jun 2026)
+public keys reproduced: 100/100
+(N-1)G = -G: ok
+2G = G + G: ok
+(a+b)G = aG + bG: ok
+RESULT: PASS
